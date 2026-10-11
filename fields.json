@@ -1,0 +1,193 @@
+[
+  {
+    "key": "enabled",
+    "type": "boolean",
+    "label": "Enable remote access",
+    "help": "Off by default. While off, no request reaches Google and the wallet is never read."
+  },
+  {
+    "key": "secret_ref",
+    "label": "OAuth grant secret",
+    "placeholder": "secret://workspace/google_calendar",
+    "help": "Wallet reference holding an access token, or JSON with client_id, client_secret and refresh_token. Never the token itself."
+  },
+  {
+    "key": "calendar_id",
+    "label": "Calendar ID",
+    "placeholder": "primary",
+    "help": "Calendar read by default, changed by create, update and delete, and watched. primary is the account's main calendar; otherwise the ID from the calendar settings."
+  },
+  {
+    "key": "operation",
+    "type": "select",
+    "options": ["list_calendars", "list_events", "get_event", "free_busy", "watch", "create_event", "update_event", "delete_event"],
+    "label": "Default operation",
+    "help": "Used when a request gives no operation. create_event and update_event need Allow changes; delete_event needs Allow deletion."
+  },
+  {
+    "key": "allowed_operations",
+    "type": "json",
+    "rows": 2,
+    "label": "Operations a request may choose",
+    "help": "JSON array among [\"list_calendars\", \"list_events\", \"get_event\", \"free_busy\", \"watch\", \"create_event\", \"update_event\", \"delete_event\"]. The default operation is always allowed."
+  },
+  {
+    "key": "default_time_zone",
+    "label": "Default time zone",
+    "placeholder": "Europe/Paris",
+    "help": "IANA time zone for request times without an offset and for date-only windows. Empty: such times must carry an offset or a request time_zone."
+  },
+  {
+    "key": "single_events",
+    "type": "boolean",
+    "label": "Expand recurring events",
+    "help": "On: list_events returns each occurrence of a recurring event. Off: one item per series. A request may choose with single_events."
+  },
+  {
+    "key": "list_limit",
+    "type": "integer",
+    "min": 1,
+    "max": 10000,
+    "label": "Items per listing (max)",
+    "help": "Upper bound for one list_events or list_calendars; a request limit can only lower it."
+  },
+  {
+    "key": "allow_writes",
+    "type": "boolean",
+    "label": "Allow changes",
+    "help": "Off by default. Required for create_event and update_event."
+  },
+  {
+    "key": "allow_delete",
+    "type": "boolean",
+    "label": "Allow deletion",
+    "help": "Off by default. Required for delete_event. A deleted event is cancelled for every guest."
+  },
+  {
+    "key": "send_updates",
+    "type": "select",
+    "options": ["none", "externalOnly", "all"],
+    "group": "write",
+    "label": "Guest notifications",
+    "help": "Emails Google sends to guests for a change. none by default; a request can only choose fewer notifications."
+  },
+  {
+    "key": "allow_request_calendar",
+    "type": "boolean",
+    "group": "write",
+    "label": "Let a request choose the calendar of a change",
+    "help": "Off: changes always go to Calendar ID. On: a request may give another calendar_id the account can edit."
+  },
+  {
+    "key": "watch_enabled",
+    "type": "boolean",
+    "label": "Watch the calendar in Active Runtime",
+    "help": "Polls Calendar ID while a Run is active and publishes created, updated and cancelled events on changed. One Shot polls only on a watch request."
+  },
+  {
+    "key": "watch_interval_sec",
+    "type": "integer",
+    "min": 60,
+    "max": 86400,
+    "group": "watch",
+    "label": "Poll interval (s)",
+    "help": "Time between two polls, at least 60 seconds. Requested polls of this node also respect the 60-second minimum."
+  },
+  {
+    "key": "watch_max_changes",
+    "type": "integer",
+    "min": 1,
+    "max": 100,
+    "group": "watch",
+    "label": "Changes per poll (max)",
+    "help": "Changes published by one poll; the others wait for the next poll in order."
+  },
+  {
+    "key": "emit_existing",
+    "type": "boolean",
+    "group": "watch",
+    "label": "Report upcoming events at the first poll",
+    "help": "Off: the first poll only records the current position. On: it also reports up to 100 upcoming events once, as existing."
+  },
+  {
+    "key": "page_size",
+    "type": "integer",
+    "min": 1,
+    "max": 2500,
+    "advanced": true,
+    "label": "Items per page",
+    "help": "Items requested per Google page (calendar lists use at most 250). A page is never cut, so next_page_token resumes exactly."
+  },
+  {
+    "key": "max_pages",
+    "type": "integer",
+    "min": 1,
+    "max": 100,
+    "advanced": true,
+    "label": "Pages per request (max)",
+    "help": "Google pages read by one listing or one poll; a listing then returns next_page_token, a poll resumes at the next poll."
+  },
+  {
+    "key": "timeout_sec",
+    "type": "integer",
+    "min": 5,
+    "max": 900,
+    "advanced": true,
+    "label": "Operation deadline (s)",
+    "help": "Total time for one request or one poll, token exchange, pages and retries included."
+  },
+  {
+    "key": "max_retries",
+    "type": "integer",
+    "min": 0,
+    "max": 5,
+    "advanced": true,
+    "label": "Retries",
+    "help": "Reads retry after HTTP 429, a rate-limit 403, 5xx or a lost connection; changes only after a rate limit."
+  },
+  {
+    "key": "max_retry_wait_sec",
+    "type": "integer",
+    "min": 1,
+    "max": 120,
+    "advanced": true,
+    "label": "Longest retry wait (s)",
+    "help": "A Retry-After above this value returns rate_limited instead of waiting."
+  },
+  {
+    "key": "max_request_bytes",
+    "type": "integer",
+    "min": 1024,
+    "max": 1048576,
+    "advanced": true,
+    "label": "Request size limit (bytes)",
+    "help": "Bound for the incoming request and for each JSON body sent to Google."
+  },
+  {
+    "key": "max_response_bytes",
+    "type": "integer",
+    "min": 65536,
+    "max": 33554432,
+    "advanced": true,
+    "label": "Response size limit (bytes)",
+    "help": "Larger JSON responses from Google are refused as protocol errors."
+  },
+  {
+    "key": "api_base_url",
+    "advanced": true,
+    "label": "Calendar API origin",
+    "help": "Keep https://www.googleapis.com. Another origin receives the access token; plain HTTP only for a loopback test host."
+  },
+  {
+    "key": "oauth_base_url",
+    "advanced": true,
+    "label": "OAuth token origin",
+    "help": "Keep https://oauth2.googleapis.com. Used only with a refresh-token grant; plain HTTP only for a loopback test host."
+  },
+  {
+    "key": "ca_file",
+    "advanced": true,
+    "label": "Custom CA file",
+    "help": "Optional absolute PEM file for a privately signed HTTPS origin. TLS verification cannot be disabled."
+  }
+]

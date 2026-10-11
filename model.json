@@ -1,0 +1,177 @@
+{
+  "kind": "google_calendar",
+  "version": "0.1.0",
+  "title": "Google Calendar",
+  "description": "List, create, update and watch Google Calendar events.",
+  "repository_url": "https://github.com/HackInvent/bloxmith-google-calendar",
+  "bloxsmith_compatibility": [
+    "1.0.9"
+  ],
+  "tested_with_bloxsmith": "1.0.9",
+  "prerequisites": [
+    {
+      "type": "manual",
+      "name": "Linux/POSIX with Python 3.10+ and TLS support, a Google OAuth grant with a Calendar scope stored in the BloxSmith wallet, and outbound HTTPS access to www.googleapis.com (and oauth2.googleapis.com for a refresh-token grant)."
+    }
+  ],
+  "locales": {
+    "en": "locales/en.json",
+    "fr": "locales/fr.json"
+  },
+  "ports": {
+    "inputs": [
+      {
+        "id": 1,
+        "name": "request",
+        "title": "request",
+        "accepts": [
+          "application/json",
+          "text/plain",
+          "message/*"
+        ],
+        "multiplicity": "one",
+        "required": false,
+        "execution_requirement": "not_required_for_execution"
+      }
+    ],
+    "outputs": [
+      {
+        "id": 1,
+        "name": "events",
+        "title": "events",
+        "emits": [
+          "application/json",
+          "message/*"
+        ],
+        "multiplicity": "many"
+      },
+      {
+        "id": 2,
+        "name": "changed",
+        "title": "changed",
+        "emits": [
+          "application/json",
+          "message/*"
+        ],
+        "multiplicity": "many"
+      },
+      {
+        "id": 3,
+        "name": "result",
+        "title": "result",
+        "emits": [
+          "application/json",
+          "message/*"
+        ],
+        "multiplicity": "many"
+      },
+      {
+        "id": 4,
+        "name": "error",
+        "title": "error",
+        "emits": [
+          "application/json",
+          "message/*"
+        ],
+        "multiplicity": "many"
+      }
+    ]
+  },
+  "config": {
+    "enabled": false,
+    "secret_ref": "",
+    "calendar_id": "primary",
+    "operation": "list_events",
+    "allowed_operations": [
+      "list_calendars",
+      "list_events",
+      "get_event",
+      "free_busy"
+    ],
+    "default_time_zone": "",
+    "single_events": true,
+    "list_limit": 250,
+    "allow_writes": false,
+    "allow_delete": false,
+    "allow_request_calendar": false,
+    "send_updates": "none",
+    "watch_enabled": false,
+    "watch_interval_sec": 300,
+    "watch_max_changes": 50,
+    "emit_existing": false,
+    "page_size": 250,
+    "max_pages": 10,
+    "timeout_sec": 60,
+    "max_request_bytes": 65536,
+    "max_response_bytes": 4194304,
+    "max_retries": 2,
+    "max_retry_wait_sec": 20,
+    "api_base_url": "https://www.googleapis.com",
+    "oauth_base_url": "https://oauth2.googleapis.com",
+    "ca_file": ""
+  },
+  "port_capabilities": {
+    "can_add_inputs": false,
+    "can_add_outputs": false
+  },
+  "runtime": {
+    "initial_state": "waiting",
+    "runtime_executable": true,
+    "active_worker": true,
+    "centralized_executor": "generic",
+    "centralized_dependency_mode": "any_event",
+    "active_execution_policy": "on_each_event"
+  },
+  "ui_assets": {
+    "modal": [
+      {
+        "kind": "css",
+        "path": "assets/css/properties.css"
+      },
+      {
+        "kind": "css",
+        "path": "assets/css/settings.css"
+      },
+      {
+        "kind": "js",
+        "path": "assets/js/properties.js"
+      },
+      {
+        "kind": "js",
+        "path": "assets/js/settings.js"
+      },
+      {
+        "kind": "js",
+        "path": "assets/js/block_modal.js"
+      }
+    ],
+    "inspector_panel": [
+      {
+        "kind": "css",
+        "path": "assets/css/properties.css"
+      },
+      {
+        "kind": "css",
+        "path": "assets/css/settings.css"
+      },
+      {
+        "kind": "js",
+        "path": "assets/js/properties.js"
+      },
+      {
+        "kind": "js",
+        "path": "assets/js/settings.js"
+      },
+      {
+        "kind": "js",
+        "path": "assets/js/inspector_panel.js"
+      }
+    ],
+    "node_card": [
+      {
+        "kind": "css",
+        "path": "assets/css/node_card.css"
+      }
+    ]
+  }
+}
